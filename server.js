@@ -17,6 +17,7 @@ app.use("/api/beneficios", beneficioRoutes);
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/uploads", express.static("uploads"));
 app.use("/api/clientes", clienteRoutes);
+app.use("/api/paginas", paginaRoutes);
 
 
 mongoose.connect(process.env.MONGO_URI)
