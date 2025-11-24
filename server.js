@@ -29,5 +29,8 @@ mongoose.connect(process.env.MONGO_URI)
 
 const PORT = process.env.PORT || 4000;
 // app.listen(PORT, () => console.log(`🚀 Servidor en puerto ${PORT}`));
+<<<<<<< HEAD
 // ✔️ AGREGAR ESTO
 export default app;
+=======
+>>>>>>> a3e5ba9e9bc6a3e6fd74dc05822ac3fcf0e0ad8c
