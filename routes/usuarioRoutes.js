@@ -2,7 +2,7 @@ import express from "express";
 import Usuario from "../models/Usuario.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { protect } from "../middleware/authMiddleware.js";
+import { protect, validarJWT } from "../middleware/authMiddleware.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -65,6 +65,37 @@ router.get("/", protect, async (req, res) => {
   res.json(usuarios);
 });
 
+// Para el Recuerdame
+router.get("/renew", validarJWT, async (req, res) => {
+  try {
+    const user = await Usuario.findById(req.uid).select(
+      "nombre apellido correo rol _id"
+    );
+
+    if (!user) {
+      return res.status(404).json({ msg: "Usuario no encontrado" });
+    }
+
+    // generar nuevo token
+    const token = generarToken({
+      id: user._id,
+      rol: user.rol,
+    });
+
+    res.json({
+      _id: user._id,
+      nombre: user.nombre,
+      apellido: user.apellido,
+      correo: user.correo,
+      rol: user.rol,
+      token, // token generado
+    });
+  } catch (error) {
+    console.log("ERROR REAL:", error);
+    res.status(500).json({ msg: "Error renovando sesión" });
+  }
+});
+
 // 🔒 Obtener uno
 router.get("/:id", protect, async (req, res) => {
   const usuario = await Usuario.findById(req.params.id);
@@ -92,5 +123,7 @@ router.delete("/:id", protect, async (req, res) => {
   await Usuario.findByIdAndDelete(req.params.id);
   res.json({ mensaje: "Usuario eliminado" });
 });
+
+
 
 export default router;

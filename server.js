@@ -6,6 +6,8 @@ import cors from "cors";
 import beneficioRoutes from "./routes/beneficioRoutes.js";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 import clienteRoutes from "./routes/clienteRoutes.js";
+import paginaRoutes from "./routes/paginaRoutes.js"
+import siteMediaRoutes from "./routes/siteMediaRoutes.js"
 
 dotenv.config();
 
@@ -18,6 +20,7 @@ app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/uploads", express.static("uploads"));
 app.use("/api/clientes", clienteRoutes);
 app.use("/api/paginas", paginaRoutes);
+app.use("/api/sitemedia", siteMediaRoutes);
 
 
 mongoose.connect(process.env.MONGO_URI)
