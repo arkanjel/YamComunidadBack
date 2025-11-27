@@ -71,16 +71,12 @@ router.get("/renew", validarJWT, async (req, res) => {
     const user = await Usuario.findById(req.uid).select(
       "nombre apellido correo rol _id"
     );
-
     if (!user) {
       return res.status(404).json({ msg: "Usuario no encontrado" });
     }
 
     // generar nuevo token
-    const token = generarToken({
-      id: user._id,
-      rol: user.rol,
-    });
+    const token = generarToken(user._id, user.rol);
 
     res.json({
       _id: user._id,

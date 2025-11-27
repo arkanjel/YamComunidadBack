@@ -20,40 +20,21 @@ export const protect = (req, res, next) => {
   }
 };
 
-// export const validarJWT = (req, res, next) => {
-//   const token = req.header("Authorization")?.split(" ")[1];
 
-//   if (!token) {
-//     return res.status(401).json({ ok: false, msg: "No hay token" });
-//   }
-
-//   try {
-//     const { uid } = jwt.verify(token, process.env.JWT_SECRET);
-//     req.uid = uid;
-//     next();
-//   } catch (error) {
-//     return res.status(401).json({ ok: false, msg: "Token inválido" });
-//   }
-// };
 export const validarJWT = (req, res, next) => {
-  const token = req.header("Authorization")?.split(" ")[1];
-
+  const token = req.header("Authorization")?.replace("Bearer ", "");
   if (!token) {
-    return res.status(401).json({ ok: false, msg: "No hay token" });
+    return res.status(401).json({ msg: "No hay token en la petición" });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const { id } = jwt.verify(token, process.env.JWT_SECRET);
 
-    // acepta uid o _id o id
-    req.uid = decoded.uid || decoded._id || decoded.id;
-
-    if (!req.uid) {
-      return res.status(401).json({ ok: false, msg: "Token sin UID" });
-    }
+    // guardar SOLO EL ID
+    req.uid = id;
 
     next();
   } catch (error) {
-    return res.status(401).json({ ok: false, msg: "Token inválido" });
+    return res.status(401).json({ msg: "Token no válido" });
   }
 };
