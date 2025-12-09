@@ -6,6 +6,6 @@ MONGO_URI=mongodb+srv://<usuario>:<password>@<cluster>.mongodb.net/<nombreBD>
 
 JWT_SECRET=<tu_secreto_jwt>
 
-
+//
 Node.js – entorno de ejecución.
 MongoDB  – base de datos.
